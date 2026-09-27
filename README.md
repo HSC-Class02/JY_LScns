@@ -10,7 +10,7 @@ LS전선(LS Cable & System, DART 고유번호 `00683283`)의 사업보고서·�
 
 **🔗 [대시보드 바로가기](https://hsc-class02.github.io/JY_LScns/)**
 
-상단은 핵심 KPI와 추세 그래프, 하단은 Annual / Half-year / Quarterly 테이블로 구성됩니다. 데이터가 처음에는 비어 있을 수 있으며, API 키를 등록한 뒤 Actions에서 한 번 실행하면 채워집니다.
+상단은 핵심 KPI와 추세 그래프, 하단은 Annual / Half-year / Quarterly 재무 테이블과 국내 Peer firms 표로 구성됩니다. 오른쪽 플로팅 메뉴에서 대시보드 화면을 PDF로 출력하거나, 기간(연간·반기·분기)을 선택해 전체 재무데이터를 Excel(`.xlsx`)로 내려받을 수 있습니다. 데이터가 처음에는 비어 있을 수 있으며, API 키를 등록한 뒤 Actions에서 한 번 실행하면 채워집니다.
 
 ## 제공 범위
 
