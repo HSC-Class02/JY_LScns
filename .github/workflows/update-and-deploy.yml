@@ -22,12 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
+        with:
+          python-version: "3.12"
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Collect and analyze new OpenDART data
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        env: {DART_API_KEY: ${{ secrets.DART_API_KEY }}}
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
         run: |
           python scripts/fetch_opendart.py --start-year 2010
           python scripts/analyze.py
@@ -47,6 +49,7 @@ jobs:
           cp -r assets/. site/assets/
           cp data/dashboard.json site/data/
       - uses: actions/upload-pages-artifact@v3
-        with: {path: site}
+        with:
+          path: site
       - id: deployment
         uses: actions/deploy-pages@v4
