@@ -13,6 +13,6 @@
   "current_liabilities": ["ifrs-full_CurrentLiabilities", "유동부채"],
   "total_liabilities": ["ifrs-full_Liabilities", "부채총계"],
   "total_equity": ["ifrs-full_Equity", "자본총계"],
-  "operating_cash_flow": ["ifrs-full_NetCashFlowsFromUsedInOperatingActivities", "영업활동으로인한현금흐름"],
+  "operating_cash_flow": ["ifrs-full_NetCashFlowsFromUsedInOperatingActivities", "ifrs-full_CashFlowsFromUsedInOperatingActivities", "영업활동으로인한현금흐름", "영업활동현금흐름"],
   "capex": ["ifrs-full_PurchaseOfPropertyPlantAndEquipment", "유형자산의취득"]
 }
