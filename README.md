@@ -20,6 +20,28 @@ LS전선(LS Cable & System, DART 고유번호 `00683283`)의 사업보고서·�
 - 재무비율: 성장률, 매출총/영업/순이익률, ROA, ROE, 유동·당좌비율, 부채비율, 재고회전율, DSO, CFO 전환율, FCF
 - GitHub Actions: 매월 1일 09:00 KST 자동 갱신 및 GitHub Pages 재배포
 
+## 국내 Peer firms
+
+Peer는 **사업 중첩도**, **지배관계**, **상장 여부 및 재무자료 접근성**을 함께 고려해 분류했습니다. 아래 내용은 2026년 9월 기준이며, LS전선의 주요 사업인 초고압·해저·배전·통신·산업용 케이블과의 중첩도를 기준으로 합니다.
+
+| 분류 | 기업 | LS전선과 겹치는 주요 사업 | 비교 시 유의사항 |
+| --- | --- | --- | --- |
+| **Core peer** | [대한전선](https://www.taihan.com/) | 초고압·전력·해저케이블 및 시공 솔루션 | 국내 독립 상장사 중 사업 중첩도가 가장 높아 핵심 비교기업으로 적합 |
+| **Partial direct peer** | [일진전기](https://www.iljinelectric.co.kr/main?lang=ko) | 초고압·중저압 전력케이블, 접속재 및 전력 인프라 | 변압기·차단기 등 중전기 사업 비중이 있어 케이블 기업 간 마진 비교 시 사업부 구성을 고려해야 함 |
+| **Secondary listed peer** | [대원전선](https://www.daewoncable.co.kr/) | 전력·통신·자동차용 전선 | 범용·중저압 제품 비중과 기업 규모 차이가 커 보조 비교기업으로 활용 |
+| **Affiliate / operating benchmark** | [가온전선](https://www.gaoncable.com/) | 전력·통신·특수케이블 및 배전 솔루션 | LS전선(주) 외 1인이 81.63%를 보유한 계열사(2025년 말 기준)이므로 독립적인 가치평가 Peer에서는 제외하고 제품 믹스·운영지표 비교에 활용 |
+| **Specialist benchmark** | [극동전선 (Lynxeo Korea)](https://www.lynxeogroup.com/ko/) | 선박·해양, 철도, 자동차 및 산업용 특수 케이블 | 비상장 해외계열 법인으로 공개 재무자료가 제한적이므로 특수 케이블 사업 비교에 한정 |
+
+### Peer 활용 원칙
+
+- **상장사 재무·가치평가 비교군:** 대한전선을 중심으로 일진전기와 대원전선을 보조적으로 사용합니다.
+- **사업·제품 비교군:** 가온전선과 극동전선은 제품 포트폴리오 및 시장 노출도 비교에 활용합니다.
+- 가온전선은 LS전선 연결 실적에 포함되는 계열사이므로 LS전선과 단순 병렬 비교하거나 평균 멀티플 계산에 함께 넣지 않습니다.
+- 일진전기는 전선과 중전기 사업을 함께 영위하므로 가능하면 전체 회사 수치보다 사업부문별 매출과 이익을 확인합니다.
+- 극동전선은 Lynxeo의 한국 특수 케이블 생산 거점이므로 초고압·해저 전력망 Peer보다는 산업용 특수 케이블 Peer에 가깝습니다.
+
+분류 근거: [LS전선 사업영역](https://www.lscns.co.kr/kr/intro/overview.asp), [대한전선 해저케이블 사업](https://www.taihan.com/news/pr/releaseDetail?idx=424), [일진전기 사업영역](https://www.iljinelectric.co.kr/main?lang=ko), [가온전선 경영정보](https://www.gaoncable.com/company/business), [Lynxeo 사업영역](https://www.lynxeogroup.com/ko/company/what-we-do.html)
+
 ## API 키 설정
 
 1. [OpenDART](https://opendart.fss.or.kr/)에서 인증키를 발급받습니다.
