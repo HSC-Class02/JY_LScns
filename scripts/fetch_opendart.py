@@ -1,6 +1,7 @@
 """Fetch LS Cable periodic filings and financial statements from OpenDART."""
 from __future__ import annotations
-import argparse, datetime as dt, json, os, pathlib, zipfile, io
+import argparse, datetime as dt, json, os, pathlib
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -22,25 +23,36 @@ def get_json(path, params):
 def main(start_year: int):
     key = api_key(); raw = ROOT / "data" / "raw"; raw.mkdir(parents=True, exist_ok=True)
     source = ROOT / "reports" / "source"; source.mkdir(parents=True, exist_ok=True)
-    today = dt.date.today().strftime("%Y%m%d"); disclosures = []
-    for year in range(start_year, dt.date.today().year + 1):
-        listing = get_json("list.json", {"crtfc_key":key,"corp_code":CORP_CODE,"bgn_de":f"{year}0101","end_de":today,"pblntf_ty":"A","page_count":100})
-        for item in listing.get("list", []):
-            name = item.get("report_nm", "")
-            if any(x in name for x in ("사업보고서", "반기보고서", "분기보고서")) and "정정" not in name:
-                disclosures.append(item)
-                rcept = item["rcept_no"]; out = source / f"{rcept}.zip"
-                if not out.exists():
-                    blob = requests.get("https://opendart.fss.or.kr/api/document.xml", params={"crtfc_key":key,"rcept_no":rcept}, timeout=120).content
-                    if blob.startswith(b"PK"): out.write_bytes(blob)
-        for code, category in REPORTS.items():
-            out = raw / f"lscns_{year}_{code}.json"
-            if out.exists(): continue
-            data = get_json("fnlttSinglAcntAll.json", {"crtfc_key":key,"corp_code":CORP_CODE,"bsns_year":str(year),"reprt_code":code,"fs_div":"CFS"})
-            if data.get("status") != "000":
-                data = get_json("fnlttSinglAcntAll.json", {"crtfc_key":key,"corp_code":CORP_CODE,"bsns_year":str(year),"reprt_code":code,"fs_div":"OFS"})
-            data.update({"year":year,"reprt_code":code,"category":category,"corp_code":CORP_CODE})
-            out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    today = dt.date.today().strftime("%Y%m%d"); years = list(range(start_year, dt.date.today().year + 1))
+
+    def listing_for(year):
+        return get_json("list.json", {"crtfc_key":key,"corp_code":CORP_CODE,"bgn_de":f"{year}0101","end_de":today,"pblntf_ty":"A","page_count":100}).get("list", [])
+
+    disclosures = []
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        for rows in pool.map(listing_for, years):
+            disclosures.extend(item for item in rows if any(x in item.get("report_nm", "") for x in ("사업보고서", "반기보고서", "분기보고서")) and "정정" not in item.get("report_nm", ""))
+
+    def download_document(item):
+        out = source / f'{item["rcept_no"]}.zip'
+        if out.exists(): return
+        response = requests.get("https://opendart.fss.or.kr/api/document.xml", params={"crtfc_key":key,"rcept_no":item["rcept_no"]}, timeout=60)
+        response.raise_for_status()
+        if response.content.startswith(b"PK"): out.write_bytes(response.content)
+
+    def fetch_financial(task):
+        year, code, category, out = task
+        data = get_json("fnlttSinglAcntAll.json", {"crtfc_key":key,"corp_code":CORP_CODE,"bsns_year":str(year),"reprt_code":code,"fs_div":"CFS"})
+        if data.get("status") != "000":
+            data = get_json("fnlttSinglAcntAll.json", {"crtfc_key":key,"corp_code":CORP_CODE,"bsns_year":str(year),"reprt_code":code,"fs_div":"OFS"})
+        data.update({"year":year,"reprt_code":code,"category":category,"corp_code":CORP_CODE})
+        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    financial_tasks = [(year, code, category, raw / f"lscns_{year}_{code}.json") for year in years for code, category in REPORTS.items() if not (raw / f"lscns_{year}_{code}.json").exists()]
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(pool.map(fetch_financial, financial_tasks))
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        list(pool.map(download_document, disclosures))
     (ROOT / "reports" / "opendart_disclosures.json").write_text(json.dumps(disclosures, ensure_ascii=False, indent=2), encoding="utf-8")
 
 if __name__ == "__main__":
