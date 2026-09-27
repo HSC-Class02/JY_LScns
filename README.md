@@ -1,6 +1,8 @@
 # LS전선 OpenDART 재무 분석 대시보드
 
-[![🔗 대시보드 바로가기](assets/ls-cable-badge.svg)](https://hsc-class02.github.io/JY_LScns/)
+<a href="https://hsc-class02.github.io/JY_LScns/"><img src="assets/ls-cable-logo.png" alt="🔗 LS전선 대시보드 바로가기" width="145"></a>
+
+### [🔗 대시보드 바로가기](https://hsc-class02.github.io/JY_LScns/)
 
 LS전선(LS Cable & System, DART 고유번호 `00683283`)의 사업보고서·반기보고서·분기보고서를 2010년부터 OpenDART에서 수집하고, 핵심 재무수치와 재무비율을 정리하는 자동화 프로젝트입니다.
 
